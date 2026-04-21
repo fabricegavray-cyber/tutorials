@@ -1,11 +1,19 @@
 from odoo import api,fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 
+        'Le prix attendu doit être strictement positif.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 
+        'Le prix de vente doit être positif.'),
+    ]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -85,3 +93,18 @@ class EstateProperty(models.Model):
                 raise UserError("Une propriété annulée ne peut pas être vendue.")
             record.state = 'sold'
         return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            # On ignore la vérification si le prix de vente est zéro
+            # (aucune offre acceptée encore)
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            # Le prix de vente ne doit pas être inférieur à 90% du prix attendu
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+                raise ValidationError(
+                    "Le prix de vente ne peut pas être inférieur à 90% du prix attendu. "
+                    f"Prix attendu: {record.expected_price}, "
+                    f"Minimum accepté: {record.expected_price * 0.9}"
+                )
