@@ -1,0 +1,7 @@
+{
+    "python.defaultInterpreterPath": "/home/pichamp/odoo17/venv/bin/python3",
+    "python.analysis.extraPaths": [
+        "/home/pichamp/odoo17",
+        "/home/pichamp/odoo17/odoo"
+    ]
+}
