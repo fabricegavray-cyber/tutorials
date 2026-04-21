@@ -64,4 +64,23 @@ class EstatePropertyOffer(models.Model):
             record.status = 'refused'
         return True
 
+    @api.model
+    def create(self, vals):
+        property_id = vals.get('property_id')
+        price = vals.get('price')
+
+        property_record = self.env['estate.property'].browse(property_id)
+
+        # Vérifier prix
+        existing_offers = property_record.offer_ids
+        if existing_offers:
+            max_price = max(existing_offers.mapped('price'))
+            if price < max_price:
+                raise UserError("The offer must be higher than existing offers.")
+
+        # Mettre à jour l'état du bien
+        property_record.state = 'offer_received'
+
+        return super().create(vals)
+
     

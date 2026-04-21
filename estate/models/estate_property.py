@@ -110,3 +110,10 @@ class EstateProperty(models.Model):
                     f"Prix attendu: {record.expected_price}, "
                     f"Minimum accepté: {record.expected_price * 0.9}"
                 )
+
+    
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_delete(self):
+        for record in self:
+            if record.state not in ('new', 'canceled'):
+                raise UserError("You can only delete new or canceled properties.")
