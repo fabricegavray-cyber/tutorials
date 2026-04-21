@@ -15,6 +15,8 @@ class EstateProperty(models.Model):
         'Le prix de vente doit être positif.'),
     ]
 
+    _order = "id desc"
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()

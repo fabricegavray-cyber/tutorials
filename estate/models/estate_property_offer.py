@@ -11,6 +11,13 @@ class EstatePropertyOffer(models.Model):
         'Le prix d\'une offre doit être strictement positif.'),
     ]
 
+    _order = "price desc"
+
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id",
+        store=True
+    )
+
     price = fields.Float()
     status = fields.Selection(
         selection=[
