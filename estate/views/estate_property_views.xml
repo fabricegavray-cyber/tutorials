@@ -4,7 +4,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_available': 1}</field>
     </record>
 
@@ -110,6 +110,46 @@
                             context="{'group_by': 'postcode'}"/>
                 </group>
             </search>
+        </field>
+    </record>
+
+    <!-- Vue Kanban -->
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="False">
+                <!-- Champs nécessaires hors template pour t-if -->
+                <field name="state"/>
+                <field name="tag_ids"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_title">
+                                <strong>
+                                    <field name="name"/>
+                                </strong>
+                            </div>
+                            <div>
+                                Expected Price: <field name="expected_price"/>
+                            </div>
+                            <!-- Best price : uniquement si une offre a été reçue -->
+                            <div t-if="record.state.raw_value == 'offer_received'">
+                                Best Price: <field name="best_price"/>
+                            </div>
+                            <!-- Selling price : uniquement si une offre a été acceptée -->
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
+                                Selling Price: <field name="selling_price"/>
+                            </div>
+                            <!-- Tags avec couleurs -->
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags"
+                                    options="{'color_field': 'color'}"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>

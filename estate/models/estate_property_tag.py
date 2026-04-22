@@ -1,9 +1,9 @@
 from odoo import fields, models
 
 class EstatePropertyTag(models.Model):
+    """Model for real estate property tags."""
     _name = "estate.property.tag"
     _description = "Real Estate Property Tag"
-
     _order = "name"
 
     name = fields.Char(required=True)
@@ -13,3 +13,4 @@ class EstatePropertyTag(models.Model):
         ('unique_name', 'UNIQUE(name)', 
          'Le nom du tag doit être unique.'),
     ]
+    
