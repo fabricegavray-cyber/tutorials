@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todoItem">
+        <!-- t-att-class ajoute des classes dynamiquement -->
+        <div t-att-class="props.todo.isCompleted ?
+                'text-muted text-decoration-line-through' : ''">
+            <!-- Checkbox pour toggle -->
+            <input
+                type="checkbox"
+                t-att-checked="props.todo.isCompleted"
+                t-on-change="() => props.toggleState(props.todo.id)"
+            />
+            <t t-esc="props.todo.id"/>. <t t-esc="props.todo.description"/>
+            <!-- Bouton supprimer -->
+            <span
+                class="fa fa-remove ms-2"
+                style="cursor: pointer;"
+                t-on-click="() => props.removeTodo(props.todo.id)"
+            />
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-header d-flex justify-content-between">
+                <t t-esc="props.title"/>
+                <!-- Bouton toggle -->
+                <button class="btn btn-sm btn-light" t-on-click="() => state.isOpen = !state.isOpen">
+                    <t t-esc="state.isOpen ? '▲' : '▼'"/>
+                </button>
+            </div>
+            <!-- Contenu affiché conditionnellement -->
+            <div class="card-body" t-if="state.isOpen">
+                <!-- t-slot affiche le contenu passé par le parent -->
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+</templates>
