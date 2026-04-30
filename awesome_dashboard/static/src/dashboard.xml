@@ -1,8 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<templates xml:space="preserve">
-
-    <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
-    </t>
-
-</templates>
+<t t-name="awesome_dashboard.AwesomeDashboard">
+    <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+        <t t-set-slot="control-panel">
+            <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+            <button class="btn btn-primary ms-2" t-on-click="openLeads">Leads</button>
+        </t>
+        <div class="d-flex flex-wrap">
+            <DashboardItem>
+                <span>Carte normale</span>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <span>Grande carte</span>
+            </DashboardItem>
+        </div>
+    </Layout>
+</t>
