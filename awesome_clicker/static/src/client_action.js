@@ -17,6 +17,19 @@ class ClickerClientAction extends Component {
         <h2>Clicks: <ClickValue value="state.clicks"/></h2>
         <button class="btn btn-primary" t-on-click="increment">+10</button>
     </div>
+    <div class="p-3">
+        <h2>Clicks: <ClickValue value="state.clicks"/></h2>
+        <button class="btn btn-primary" t-on-click="increment">+10</button>
+
+        <div t-if="state.level >= 1" class="mt-3">
+            <h4>ClickBots: <t t-esc="state.clickBots"/></h4>
+            <button class="btn btn-success"
+                    t-on-click="buyClickBot"
+                    t-att-disabled="state.clicks lt 1000">
+                Buy ClickBot (1000 clics)
+            </button>
+        </div>
+    </div>
     `;
 
     setup() {
@@ -27,6 +40,10 @@ class ClickerClientAction extends Component {
     increment(ev) {
         ev.stopPropagation();
         this.clicker.increment(10);
+    }
+
+    buyClickBot() {
+        this.clicker.buyClickBot();
     }
 }
 
