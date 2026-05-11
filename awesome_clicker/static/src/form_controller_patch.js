@@ -12,7 +12,7 @@ patch(FormController.prototype, {
         this.action = useService("action");
 
         // 1% de chance d'avoir une récompense
-        if (Math.random() < 1) {
+        if (Math.random() < 0.01) {
             const reward = getReward(this.clicker.level);
             if (reward) {
                 this.notification.add(reward.description, {
